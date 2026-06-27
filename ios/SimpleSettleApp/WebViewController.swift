@@ -177,7 +177,7 @@ extension WebViewController: WKScriptMessageHandler {
 extension WebViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView,
                  decidePolicyFor navigationAction: WKNavigationAction,
-                 decisionHandler: @escaping (WKNavigationPolicy) -> Void) {
+                 decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         guard let url = navigationAction.request.url else {
             decisionHandler(.allow); return
         }
