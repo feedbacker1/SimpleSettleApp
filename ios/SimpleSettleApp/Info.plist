@@ -29,6 +29,11 @@
     <key>UILaunchScreen</key>
     <dict/>
 
+    <!-- App uses only standard HTTPS (exempt) encryption -> skip the export
+         compliance prompt on every TestFlight build. -->
+    <key>ITSAppUsesNonExemptEncryption</key>
+    <false/>
+
     <!-- ============ Google Sign-In ============ -->
     <!-- GIDClientID: your iOS OAuth client ID (create in Google Cloud Console). -->
     <key>GIDClientID</key>
