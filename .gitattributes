@@ -1,0 +1,14 @@
+# Normalize line endings to LF so files behave on the macOS CI runner.
+* text=auto eol=lf
+
+# Windows batch files must keep CRLF
+*.bat text eol=crlf
+
+# Treat these as binary (never touch line endings)
+*.png binary
+*.jpg binary
+*.jar binary
+*.aab binary
+*.apk binary
+*.dm binary
+*.p8 binary

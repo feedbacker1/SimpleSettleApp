@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleDisplayName</key>
+    <string>Simple Settle App</string>
+    <key>CFBundleExecutable</key>
+    <string>$(EXECUTABLE_NAME)</string>
+    <key>CFBundleIdentifier</key>
+    <string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+    <key>CFBundleInfoDictionaryVersion</key>
+    <string>6.0</string>
+    <key>CFBundleName</key>
+    <string>$(PRODUCT_NAME)</string>
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+    <key>CFBundleShortVersionString</key>
+    <string>$(MARKETING_VERSION)</string>
+    <key>CFBundleVersion</key>
+    <string>$(CURRENT_PROJECT_VERSION)</string>
+
+    <!-- Portrait + landscape, like a normal WebView app -->
+    <key>UISupportedInterfaceOrientations</key>
+    <array>
+        <string>UIInterfaceOrientationPortrait</string>
+        <string>UIInterfaceOrientationLandscapeLeft</string>
+        <string>UIInterfaceOrientationLandscapeRight</string>
+    </array>
+    <key>UILaunchScreen</key>
+    <dict/>
+
+    <!-- ============ Google Sign-In ============ -->
+    <!-- GIDClientID: your iOS OAuth client ID (create in Google Cloud Console). -->
+    <key>GIDClientID</key>
+    <string>466145634768-vlj77aicurcncoali4ev6l83anphrjsn.apps.googleusercontent.com</string>
+    <!-- GIDServerClientID: the WEB client ID already used by the Android app. -->
+    <key>GIDServerClientID</key>
+    <string>466145634768-iot2epki52s1m93ru7e1rdt61gtvo8bg.apps.googleusercontent.com</string>
+
+    <!-- URL scheme = your iOS client ID REVERSED (REVERSED_CLIENT_ID). -->
+    <key>CFBundleURLTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>com.googleusercontent.apps.466145634768-vlj77aicurcncoali4ev6l83anphrjsn</string>
+            </array>
+        </dict>
+    </array>
+
+    <!-- Let the app open external apps for tel:/mailto:/sms: links -->
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+        <string>tel</string>
+        <string>mailto</string>
+        <string>sms</string>
+    </array>
+</dict>
+</plist>

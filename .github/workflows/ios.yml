@@ -1,0 +1,42 @@
+name: iOS Build & TestFlight
+
+on:
+  push:
+    branches: [ main ]
+    paths: [ "ios/**", ".github/workflows/ios.yml" ]
+  workflow_dispatch:   # lets you run it manually from the GitHub "Actions" tab
+
+jobs:
+  build:
+    runs-on: macos-14   # GitHub-hosted macOS runner (free minutes on public repos)
+    defaults:
+      run:
+        working-directory: ios
+    env:
+      APP_IDENTIFIER: com.simplesettleapp.com          # must match project.yml + Info.plist
+      DEVELOPMENT_TEAM: ${{ secrets.DEVELOPMENT_TEAM }}
+      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+      ASC_KEY_CONTENT: ${{ secrets.ASC_KEY_CONTENT }}
+      ASC_TEAM_ID: ${{ secrets.ASC_TEAM_ID }}
+      MATCH_GIT_URL: ${{ secrets.MATCH_GIT_URL }}
+      MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+      MATCH_GIT_BASIC_AUTHORIZATION: ${{ secrets.MATCH_GIT_BASIC_AUTHORIZATION }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_16.app
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Set up Ruby + Fastlane
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.2"
+          bundler-cache: true
+          working-directory: ios
+
+      - name: Build & upload to TestFlight
+        run: bundle exec fastlane beta

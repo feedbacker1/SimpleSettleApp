@@ -1,0 +1,22 @@
+# XcodeGen output (regenerated on CI)
+*.xcodeproj
+*.xcworkspace
+
+# Build artifacts
+build/
+DerivedData/
+*.ipa
+*.dSYM.zip
+
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/test_output
+
+# Ruby
+vendor/bundle/
+.bundle/
+
+# macOS
+.DS_Store

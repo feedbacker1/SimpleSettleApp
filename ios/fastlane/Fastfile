@@ -1,0 +1,63 @@
+default_platform(:ios)
+
+PROJECT = "SimpleSettleApp.xcodeproj"
+SCHEME  = "SimpleSettleApp"
+
+platform :ios do
+  before_all do
+    # Authenticate to App Store Connect with an API key (no 2FA / password needed).
+    app_store_connect_api_key(
+      key_id: ENV["ASC_KEY_ID"],
+      issuer_id: ENV["ASC_ISSUER_ID"],
+      key_content: ENV["ASC_KEY_CONTENT"],   # base64-encoded .p8 contents
+      is_key_content_base64: true,
+      in_house: false
+    )
+  end
+
+  desc "Build and upload a new build to TestFlight"
+  lane :beta do
+    setup_ci   # creates a temporary keychain on the CI machine
+
+    # Generate the Xcode project from project.yml.
+    sh("cd .. && xcodegen generate")
+
+    # Fetch (or create, with the API key) the appstore cert + provisioning profile.
+    match(
+      type: "appstore",
+      readonly: false
+    )
+
+    # Point the target at the profile match just installed.
+    update_code_signing_settings(
+      use_automatic_signing: false,
+      path: PROJECT,
+      team_id: ENV["DEVELOPMENT_TEAM"],
+      bundle_identifier: ENV["APP_IDENTIFIER"] || "com.simplesettleapp.com",
+      code_sign_identity: "Apple Distribution",
+      profile_name: ENV["sigh_#{ENV['APP_IDENTIFIER'] || 'com.simplesettleapp.com'}_appstore_profile-name"]
+    )
+
+    # Auto-increment the build number from what's already on TestFlight.
+    increment_build_number(
+      build_number: latest_testflight_build_number(initial_build_number: 0) + 1,
+      xcodeproj: PROJECT
+    )
+
+    build_app(
+      project: PROJECT,
+      scheme: SCHEME,
+      export_method: "app-store",
+      clean: true
+    )
+
+    upload_to_testflight(
+      skip_waiting_for_build_processing: true
+    )
+  end
+
+  desc "First-time setup: create signing cert + profile and store them in the match repo"
+  lane :bootstrap_signing do
+    match(type: "appstore", readonly: false)
+  end
+end

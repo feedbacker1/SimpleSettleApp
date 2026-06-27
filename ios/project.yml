@@ -1,0 +1,40 @@
+# XcodeGen spec. The CI runner runs `xcodegen generate` to produce
+# SimpleSettleApp.xcodeproj from this file — so the project is fully defined
+# in version control and no Mac is needed to author it.
+#
+# Docs: https://github.com/yonaskolb/XcodeGen
+name: SimpleSettleApp
+options:
+  bundleIdPrefix: com.simplesettleapp
+  deploymentTarget:
+    iOS: "15.0"
+  createIntermediateGroups: true
+
+packages:
+  GoogleSignIn:
+    url: https://github.com/google/GoogleSignIn-iOS
+    from: "7.1.0"
+
+targets:
+  SimpleSettleApp:
+    type: application
+    platform: iOS
+    sources:
+      - path: SimpleSettleApp
+    info:
+      path: SimpleSettleApp/Info.plist
+    dependencies:
+      - package: GoogleSignIn
+        product: GoogleSignIn
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.simplesettleapp.com   # matches the Google iOS OAuth client + Android applicationId
+        MARKETING_VERSION: "1.0"
+        CURRENT_PROJECT_VERSION: "1"
+        GENERATE_INFOPLIST_FILE: NO
+        INFOPLIST_FILE: SimpleSettleApp/Info.plist
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        SWIFT_VERSION: "5.0"
+        TARGETED_DEVICE_FAMILY: "1,2"   # iPhone + iPad
+        # Signing is driven by Fastlane match on CI (manual style).
+        CODE_SIGN_STYLE: Manual

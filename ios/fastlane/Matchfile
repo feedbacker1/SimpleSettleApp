@@ -1,0 +1,10 @@
+# Fastlane match stores your signing certificate + provisioning profiles,
+# encrypted, in a SEPARATE private git repo so CI can reuse them.
+#
+# Create an empty private repo (e.g. github.com/<you>/simplesettle-certs) and put
+# its URL in the MATCH_GIT_URL secret.
+git_url(ENV["MATCH_GIT_URL"])
+storage_mode("git")
+type("appstore")
+app_identifier([ENV["APP_IDENTIFIER"] || "com.simplesettleapp.com"])
+# Encryption passphrase comes from the MATCH_PASSWORD secret.
