@@ -181,6 +181,22 @@ extension WebViewController: WKNavigationDelegate {
         guard let url = navigationAction.request.url else {
             decisionHandler(.allow); return
         }
+
+        // Google blocks OAuth inside embedded WebViews ("disallowed_useragent" 403).
+        // The website's web-login path navigates to /auth/google/redirect (and from
+        // there to accounts.google.com). Intercept it and run NATIVE Google Sign-In
+        // instead (system browser, allowed by Google) — same result as the Android
+        // app's AndroidInterface.googleLogin() bridge. The page defines
+        // window.onGoogleLoginSuccess unconditionally, so the token handoff works.
+        let host = url.host ?? ""
+        if (host.contains("simplesettleapp.com") && url.path.hasPrefix("/auth/google"))
+            || host == "accounts.google.com"
+            || host.hasSuffix(".accounts.google.com") {
+            decisionHandler(.cancel)
+            startGoogleSignIn()
+            return
+        }
+
         let scheme = url.scheme?.lowercased() ?? ""
         // tel: / mailto: / sms: and any non-http(s) scheme -> open with the system,
         // matching shouldOverrideUrlLoading in MainActivity.kt.
