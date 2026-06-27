@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: macos-14   # GitHub-hosted macOS runner (free minutes on public repos)
+    runs-on: macos-15   # needs Xcode 26 (iOS 26 SDK) — available on macOS 15+ runners
     defaults:
       run:
         working-directory: ios
@@ -25,10 +25,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Select Xcode
+      - name: Select Xcode 26 (iOS 26 SDK required by App Store)
         uses: maxim-lobanov/setup-xcode@v1
         with:
-          xcode-version: latest-stable
+          xcode-version: "26"
+
+      - name: Show Xcode / SDK versions
+        run: |
+          xcodebuild -version
+          xcodebuild -showsdks | grep -i ios || true
 
       - name: Install XcodeGen
         run: brew install xcodegen

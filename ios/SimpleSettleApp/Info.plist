@@ -19,13 +19,22 @@
     <key>CFBundleVersion</key>
     <string>$(CURRENT_PROJECT_VERSION)</string>
 
-    <!-- Portrait + landscape, like a normal WebView app -->
+    <!-- iPhone: portrait + landscape, like a normal WebView app -->
     <key>UISupportedInterfaceOrientations</key>
     <array>
         <string>UIInterfaceOrientationPortrait</string>
         <string>UIInterfaceOrientationLandscapeLeft</string>
         <string>UIInterfaceOrientationLandscapeRight</string>
     </array>
+    <!-- iPad: must declare ALL FOUR orientations for multitasking (ITMS-90474) -->
+    <key>UISupportedInterfaceOrientations~ipad</key>
+    <array>
+        <string>UIInterfaceOrientationPortrait</string>
+        <string>UIInterfaceOrientationPortraitUpsideDown</string>
+        <string>UIInterfaceOrientationLandscapeLeft</string>
+        <string>UIInterfaceOrientationLandscapeRight</string>
+    </array>
+    <!-- Launch screen via UILaunchScreen (min iOS >= 14) satisfies ITMS-90475 -->
     <key>UILaunchScreen</key>
     <dict/>
 
