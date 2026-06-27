@@ -38,9 +38,13 @@ platform :ios do
       profile_name: ENV["sigh_#{ENV['APP_IDENTIFIER'] || 'com.simplesettleapp.com'}_appstore_profile-name"]
     )
 
-    # Auto-increment the build number from what's already on TestFlight.
+    # Use the GitHub Actions run number as a monotonic, always-unique build number.
+    # (Avoids collisions when a prior binary reserved a number but never became a
+    # valid TestFlight build.) Falls back to TestFlight+1 when run locally.
+    build_no = ENV["GITHUB_RUN_NUMBER"]
+    build_no ||= (latest_testflight_build_number(initial_build_number: 0) + 1).to_s
     increment_build_number(
-      build_number: latest_testflight_build_number(initial_build_number: 0) + 1,
+      build_number: build_no,
       xcodeproj: PROJECT
     )
 

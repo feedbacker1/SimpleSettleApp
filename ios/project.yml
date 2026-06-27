@@ -21,8 +21,11 @@ targets:
     platform: iOS
     sources:
       - path: SimpleSettleApp
-    info:
-      path: SimpleSettleApp/Info.plist
+        excludes:
+          - "Info.plist"   # referenced via INFOPLIST_FILE, not copied as a resource
+    # NOTE: do NOT add an `info:` block here — it makes XcodeGen GENERATE and
+    # overwrite Info.plist with defaults, wiping our orientations/Google/compliance
+    # keys. We reference our hand-written file via INFOPLIST_FILE below instead.
     dependencies:
       - package: GoogleSignIn
         product: GoogleSignIn
@@ -31,7 +34,7 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.simplesettleapp.com   # matches the Google iOS OAuth client + Android applicationId
         MARKETING_VERSION: "1.0"
         CURRENT_PROJECT_VERSION: "1"
-        GENERATE_INFOPLIST_FILE: NO
+        GENERATE_INFOPLIST_FILE: "NO"
         INFOPLIST_FILE: SimpleSettleApp/Info.plist
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         SWIFT_VERSION: "5.0"
